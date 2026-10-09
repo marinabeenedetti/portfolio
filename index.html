@@ -3,43 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%232443d6'/><path d='M18 33l9 9 19-20' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%234a12d6'/><path d='M18 33l9 9 19-20' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <title>Marina Benedetti · QA</title>
 <meta name="description" content="Portfólio de Marina Benedetti Preto, Engenheira de QA Sênior com mais de 11 anos em testes de software e automação.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: relatório de testes — faixa de cobalto como cor de marca, âmbar como marca-texto de achados, verde/vermelho só para PASS/FAIL */
+/* Layout: relatório de testes — violeta elétrico como cor de marca, lilás como marca-texto, verde/vermelho só para PASS/FAIL */
 :root{
-  --bg:#f5f6fa; --surface:#ffffff; --surface-2:#eceef6; --ink:#0d1530; --muted:#4f5774;
-  --line:#dde1ee; --accent:#2443d6; --accent-text:#2443d6; --on-accent:#ffffff;
-  --amber:#f2a516; --amber-text:#8f5800; --mark:rgba(242,165,22,.42); --chip:#e6eafb;
+  --bg:#f7f6fb; --surface:#ffffff; --surface-2:#eeebf8; --ink:#140c2e; --muted:#574f70;
+  --line:#e2ddf2; --accent:#4a12d6; --accent-text:#4a12d6; --on-accent:#ffffff;
+  --amber:#8f73f0; --amber-text:#5b2fd1; --mark:rgba(143,115,240,.34); --chip:#ece7fd;
   --pass:#13865a; --fail:#c8322a;
-  --term-bg:#0d1530; --term-ink:#e4e8f7; --term-dim:#8790b3; --term-line:#202a4d;
-  --term-pass:#46d695; --term-fail:#ff7a70; --term-key:#9fb0ff; --term-str:#f5b94a;
-  --shadow:0 24px 48px -28px rgba(13,21,48,.45);
+  --term-bg:#140c2e; --term-ink:#ece8fb; --term-dim:#9389b3; --term-line:#2a2050;
+  --term-pass:#46d695; --term-fail:#ff7a70; --term-key:#c7b8ff; --term-str:#a98bff;
+  --shadow:0 24px 48px -28px rgba(74,18,214,.4);
   --display:"Schibsted Grotesk","Segoe UI",system-ui,sans-serif;
   --body:"Public Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0a0e1c; --surface:#11172b; --surface-2:#171e36; --ink:#eef0f8; --muted:#a0a7c2;
-    --line:#252d4a; --accent:#7189ff; --accent-text:#93a3ff; --on-accent:#0a0e1c;
-    --amber:#f5b631; --amber-text:#f5b631; --mark:rgba(245,182,49,.32); --chip:#1b2342;
+    --bg:#0d0a1a; --surface:#151026; --surface-2:#1c1633; --ink:#f2effc; --muted:#aaa2c4;
+    --line:#2c2447; --accent:#9a7dff; --accent-text:#b29cff; --on-accent:#12082e;
+    --amber:#9a7dff; --amber-text:#b29cff; --mark:rgba(154,125,255,.38); --chip:#241a45;
     --pass:#3fd28f; --fail:#ff6b61;
-    --term-bg:#060914; --term-line:#1e2645;
+    --term-bg:#08051a; --term-line:#2a2050;
     --shadow:0 24px 60px -30px rgba(0,0,0,.8); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0a0e1c; --surface:#11172b; --surface-2:#171e36; --ink:#eef0f8; --muted:#a0a7c2;
-  --line:#252d4a; --accent:#7189ff; --accent-text:#93a3ff; --on-accent:#0a0e1c;
-  --amber:#f5b631; --amber-text:#f5b631; --mark:rgba(245,182,49,.32); --chip:#1b2342;
-  --pass:#3fd28f; --fail:#ff6b61;
-  --term-bg:#060914; --term-line:#1e2645;
-  --shadow:0 24px 60px -30px rgba(0,0,0,.8); color-scheme:dark;
+  --bg:#0d0a1a; --surface:#151026; --surface-2:#1c1633; --ink:#f2effc; --muted:#aaa2c4;
+    --line:#2c2447; --accent:#9a7dff; --accent-text:#b29cff; --on-accent:#12082e;
+    --amber:#9a7dff; --amber-text:#b29cff; --mark:rgba(154,125,255,.38); --chip:#241a45;
+    --pass:#3fd28f; --fail:#ff6b61;
+    --term-bg:#08051a; --term-line:#2a2050;
+    --shadow:0 24px 60px -30px rgba(0,0,0,.8); color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{margin:0}
@@ -102,7 +102,7 @@ h1 .hl{font-style:normal; background:linear-gradient(transparent 58%, var(--mark
 .term{background:var(--term-bg); color:var(--term-ink); border-radius:16px; border:1px solid var(--term-line); box-shadow:var(--shadow); overflow:hidden; font:400 12.5px/1.75 var(--mono); min-width:0}
 .term-head{display:flex; align-items:center; gap:7px; padding:12px 16px; border-bottom:1px solid var(--term-line)}
 .term-head i{width:11px; height:11px; border-radius:50%; background:var(--term-line)}
-.term-head i:nth-child(1){background:#f2a516} .term-head i:nth-child(2){background:#7189ff}
+.term-head i:nth-child(1){background:#8f73f0} .term-head i:nth-child(2){background:#c7b8ff}
 .term-head b{margin-left:auto; font-weight:400; color:var(--term-dim); font-size:12px}
 .term-body{padding:18px 20px 22px; overflow-x:auto; white-space:pre}
 .t-dim{color:var(--term-dim)} .t-key{color:var(--term-key)} .t-str{color:var(--term-str)}
@@ -143,7 +143,7 @@ h3{font:700 21px/1.25 var(--display); letter-spacing:-.015em; margin:0; text-wra
 @media (max-width:960px){.cases{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.cases{grid-template-columns:1fr}}
 .case{padding:24px; border-radius:16px; background:var(--surface); border:1px solid var(--line); display:flex; flex-direction:column; gap:12px; min-width:0}
-.case .metric{font:800 30px/1 var(--display); letter-spacing:-.03em; color:var(--accent-text); font-variant-numeric:tabular-nums}
+.case .metric{font:800 30px/1.05 var(--display); text-wrap:balance; letter-spacing:-.03em; color:var(--accent-text); font-variant-numeric:tabular-nums}
 .case .metric small{font-size:15px; font-weight:700; color:var(--muted); letter-spacing:0}
 .case h3{font-size:18px}
 .case p{margin:0; color:var(--muted); font-size:14.5px}
@@ -198,7 +198,7 @@ h3{font:700 21px/1.25 var(--display); letter-spacing:-.015em; margin:0; text-wra
 .contact{border-radius:24px; padding:clamp(28px,6vw,64px); background:var(--accent); color:var(--on-accent); display:grid; grid-template-columns:1.1fr .9fr; gap:32px; align-items:center}
 @media (max-width:960px){.contact{grid-template-columns:1fr}}
 .contact h2{font-size:clamp(32px,5vw,52px)}
-.contact h2 .hl{background:linear-gradient(transparent 60%, color-mix(in srgb,var(--amber) 70%,transparent) 60%, color-mix(in srgb,var(--amber) 70%,transparent) 92%, transparent 92%)}
+.contact h2 .hl{background:linear-gradient(transparent 60%, color-mix(in srgb,var(--on-accent) 22%,transparent) 60%, color-mix(in srgb,var(--on-accent) 22%,transparent) 92%, transparent 92%)}
 .contact p{opacity:.85; max-width:44ch}
 .contact .tag{color:inherit; opacity:.8}
 .clist{display:grid; gap:10px}
@@ -309,8 +309,8 @@ footer code{font-family:var(--mono); font-size:12.5px}
       <article class="case">
         <div class="metric" data-i18n="cs.2m">Automação</div>
         <h3 data-i18n="cs.2t">Cenários prioritários automatizados</h3>
-        <p data-i18n="cs.2d">Automatização de mais de 200 Casos de Teste. Redução do tempo de teste de 2 dias, para 2 horas</p>
-        <span class="where">Cast Group</span>
+        <p data-i18n="cs.2d">Automatizei mais de 200 casos de teste e reduzi o tempo de execução de 2 dias para 2 horas.</p>
+        <span class="where">CAST Group</span>
       </article>
       <article class="case">
         <div class="metric">CoE</div>
@@ -319,9 +319,9 @@ footer code{font-family:var(--mono); font-size:12.5px}
         <span class="where">CAST Group</span>
       </article>
       <article class="case">
-        <div class="metric">Estruturação QA </div>
+        <div class="metric" data-i18n="cs.4m">Estruturação de QA</div>
         <h3 data-i18n="cs.4t">Liderança de squad</h3>
-        <p data-i18n="cs.4d">Liderei a squad de teste de um ERP para micro e pequenas empresas, criando a area de testes e usando metodologia ágil com Scrum e Kanban.</p>
+        <p data-i18n="cs.4d">Liderei a squad de teste de um ERP para micro e pequenas empresas, criando a área de testes e usando metodologia ágil com Scrum e Kanban.</p>
         <span class="where">ADM Sistemas</span>
       </article>
     </div>
@@ -329,7 +329,7 @@ footer code{font-family:var(--mono); font-size:12.5px}
 
   <!-- EXPERIENCIA -->
   <section class="block" id="experiencia">
-    <div class="sec-head"><div><span class="tag" data-i18n="xp.tag">Experiência</span><h2 data-i18n="xp.h2">Aonde estou testando</h2></div></div>
+    <div class="sec-head"><div><span class="tag" data-i18n="xp.tag">Experiência</span><h2 data-i18n="xp.h2">Onde já testei</h2></div></div>
     <div class="timeline">
       <article class="job">
         <div class="when">06/2025 – <span data-i18n="xp.cur">atual</span><br><span class="now" data-i18n="xp.now">Em andamento</span></div>
@@ -388,7 +388,7 @@ footer code{font-family:var(--mono); font-size:12.5px}
           <h3 data-i18n="xp.5r">Analista de Teste de Software</h3>
           <div class="co">ADM Sistemas</div>
           <ul>
-            <li data-i18n="xp.5a">Testes funcionais para homologação de <strong>PAF-ECF</strong> na SEF, reduzindo a validação de 5 para 2 dias.</li>
+            <li data-i18n="xp.5a">Testes funcionais para homologação de <strong>PAF-ECF</strong> na SEF, reduzindo a validação de 10 para 2 dias.</li>
             <li data-i18n="xp.5b">Validação e documentação de requisitos; testes funcionais, de usabilidade, alfa e beta.</li>
             <li data-i18n="xp.5c">Testes unitários com JUnit e automação com Cucumber.</li>
             <li data-i18n="xp.5d">Definição de padrões de QA, implantação do Redmine e condução de workshops internos.</li>
@@ -464,6 +464,7 @@ footer code{font-family:var(--mono); font-size:12.5px}
       <div class="clist">
         <div class="crow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 7 9 6 9-6"/></svg></span><span class="txt"><small>E-mail</small><b id="email">marina.bendetti@gmail.com</b></span><button type="button" class="copy" id="copy-email" data-i18n="co.copy">Copiar</button></div>
         <a class="crow" href="https://www.linkedin.com/in/marinabenedetti/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg></span><span class="txt"><small>LinkedIn</small><b>in/marinabenedetti</b></span></a>
+        <a class="crow" href="https://github.com/marinabeenedetti" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg></span><span class="txt"><small>GitHub</small><b>marinabeenedetti</b></span></a>
       </div>
     </div>
   </section>
@@ -489,11 +490,11 @@ footer code{font-family:var(--mono); font-size:12.5px}
     "about.v2t":"Automation and APIs","about.v2d":"Cypress, Playwright and Robot Framework for the UI; Postman and Newman for REST APIs.",
     "about.v3t":"Strategy and people","about.v3d":"Quality standards, squad leadership and teaching QA inside a CoE.",
     "cs.tag":"Highlights","cs.h2":"Results I bring with me","cs.p":"A few moments from my career that show how I work.","cs.days":"days",
-    "cs.1t":"Faster PAF-ECF certification","cs.1d":"I planned and ran the functional tests for certification with the state Treasury and cut validation time from 5 to 2 days.",
-    "cs.2m":"Day 1","cs.2t":"Shift-left on a new project","cs.2d":"On the PGP system for the Mais Médicos program, I test from the moment user stories and prototypes are written, and help define the story and testing standards.",
+    "cs.1t":"Faster PAF-ECF certification","cs.1d":"I planned and ran the functional tests for certification with the state Treasury and cut validation time from 10 to 2 days.",
+    "cs.2m":"Automation","cs.2t":"Priority scenarios automated","cs.2d":"I automated over 200 test cases and cut execution time from 2 days to 2 hours.",
     "cs.3t":"Teaching and QA standards","cs.3d":"In the QA Center of Excellence, I support company-wide practices and tools and teach courses and talks for other professionals.",
-    "cs.4t":"Squad leadership","cs.4d":"I led the squad improving an ERP for micro and small businesses, using OKR goals and metrics, Scrum and Kanban.",
-    "xp.tag":"Experience","xp.h2":"Where I've worked","xp.cur":"present","xp.now":"Current",
+    "cs.4m":"Building QA","cs.4t":"Squad leadership","cs.4d":"I led the testing squad for an ERP for micro and small businesses, building the testing area from scratch with Scrum and Kanban.",
+    "xp.tag":"Experience","xp.h2":"Where I've tested","xp.cur":"present","xp.now":"Current",
     "xp.1r":"Software Quality Analyst","xp.1c":"AgSUS · Brazilian Agency for SUS Management Support",
     "xp.1a":"<strong>Shift-left</strong> testing while user stories and prototypes are written for the new PGP system (Mais Médicos para o Brasil program).",
     "xp.1b":"Defining guidelines and standards for user stories, testing and development processes.",
@@ -513,7 +514,7 @@ footer code{font-family:var(--mono); font-size:12.5px}
     "xp.4b":"OKR goals and metrics, with Scrum and Kanban.",
     "xp.4c":"Usability fixes in Delphi, JUnit tests, Firebird database and defect tracking in Redmine.",
     "xp.5r":"Software Test Analyst",
-    "xp.5a":"Functional tests for <strong>PAF-ECF</strong> certification with the state Treasury, cutting validation from 5 to 2 days.",
+    "xp.5a":"Functional tests for <strong>PAF-ECF</strong> certification with the state Treasury, cutting validation from 10 to 2 days.",
     "xp.5b":"Requirements validation and documentation; functional, usability, alpha and beta testing.",
     "xp.5c":"Unit tests with JUnit and automation with Cucumber.",
     "xp.5d":"Defining QA standards, rolling out Redmine and running internal workshops.",
