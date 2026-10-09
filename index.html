@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%232443d6'/><path d='M18 33l9 9 19-20' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<title>Marina Benedetti · QA</title>
+<meta name="description" content="Portfólio de Marina Benedetti Preto, Engenheira de QA Sênior com mais de 11 anos em testes de software e automação.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: relatório de testes — faixa de cobalto como cor de marca, âmbar como marca-texto de achados, verde/vermelho só para PASS/FAIL */
+:root{
+  --bg:#f5f6fa; --surface:#ffffff; --surface-2:#eceef6; --ink:#0d1530; --muted:#4f5774;
+  --line:#dde1ee; --accent:#2443d6; --accent-text:#2443d6; --on-accent:#ffffff;
+  --amber:#f2a516; --amber-text:#8f5800; --mark:rgba(242,165,22,.42); --chip:#e6eafb;
+  --pass:#13865a; --fail:#c8322a;
+  --term-bg:#0d1530; --term-ink:#e4e8f7; --term-dim:#8790b3; --term-line:#202a4d;
+  --term-pass:#46d695; --term-fail:#ff7a70; --term-key:#9fb0ff; --term-str:#f5b94a;
+  --shadow:0 24px 48px -28px rgba(13,21,48,.45);
+  --display:"Schibsted Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Public Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0e1c; --surface:#11172b; --surface-2:#171e36; --ink:#eef0f8; --muted:#a0a7c2;
+    --line:#252d4a; --accent:#7189ff; --accent-text:#93a3ff; --on-accent:#0a0e1c;
+    --amber:#f5b631; --amber-text:#f5b631; --mark:rgba(245,182,49,.32); --chip:#1b2342;
+    --pass:#3fd28f; --fail:#ff6b61;
+    --term-bg:#060914; --term-line:#1e2645;
+    --shadow:0 24px 60px -30px rgba(0,0,0,.8); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0e1c; --surface:#11172b; --surface-2:#171e36; --ink:#eef0f8; --muted:#a0a7c2;
+  --line:#252d4a; --accent:#7189ff; --accent-text:#93a3ff; --on-accent:#0a0e1c;
+  --amber:#f5b631; --amber-text:#f5b631; --mark:rgba(245,182,49,.32); --chip:#1b2342;
+  --pass:#3fd28f; --fail:#ff6b61;
+  --term-bg:#060914; --term-line:#1e2645;
+  --shadow:0 24px 60px -30px rgba(0,0,0,.8); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0}
+html{scroll-behavior:smooth; scroll-padding-top:84px}
+body{background:var(--bg); color:var(--ink); font:400 16px/1.65 var(--body); -webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:clamp(16px,4vw,32px)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+
+/* header */
+header.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); background:color-mix(in srgb,var(--bg) 82%,transparent); border-bottom:1px solid var(--line)}
+.bar{display:flex; align-items:center; gap:16px; height:64px}
+.logo{font:800 19px/1 var(--display); text-decoration:none; letter-spacing:-.02em; display:flex; align-items:center; gap:10px}
+.logo i{width:22px; height:22px; border-radius:6px; background:var(--accent); display:grid; place-items:center; color:var(--on-accent); font:600 13px/1 var(--mono); font-style:normal}
+.logo span{color:var(--amber-text)}
+nav.links{display:flex; gap:2px; margin-left:auto}
+nav.links a{font-size:14px; font-weight:500; text-decoration:none; color:var(--muted); padding:8px 11px; border-radius:8px; transition:.2s}
+nav.links a:hover{color:var(--ink); background:var(--surface-2)}
+.controls{display:flex; gap:8px; align-items:center}
+.seg{display:flex; padding:3px; border-radius:10px; background:var(--surface-2); border:1px solid var(--line)}
+.seg button{border:0; background:none; color:var(--muted); font:600 12px/1 var(--mono); padding:8px 10px; border-radius:7px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.icon-btn{width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); display:grid; place-items:center; cursor:pointer}
+.icon-btn svg{width:18px; height:18px}
+.sun{display:none}
+:root[data-theme="dark"] .sun{display:block} :root[data-theme="dark"] .moon{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sun{display:block} :root:not([data-theme="light"]) .moon{display:none}}
+#menu-btn{display:none}
+@media (max-width:960px){
+  #menu-btn{display:grid}
+  .controls{margin-left:auto}
+  nav.links{display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; padding:8px clamp(16px,4vw,32px) 16px; background:var(--bg); border-bottom:1px solid var(--line)}
+  nav.links.open{display:flex}
+  nav.links a{padding:12px 10px; font-size:16px}
+}
+
+/* buttons */
+.btn{display:inline-flex; align-items:center; gap:10px; padding:13px 22px; border-radius:10px; font:600 15px/1 var(--body); text-decoration:none; border:1.5px solid transparent; cursor:pointer; transition:transform .2s, background .2s, border-color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:16px; height:16px}
+.btn-primary{background:var(--accent); color:var(--on-accent)}
+.btn-ghost{border-color:var(--line); color:var(--ink); background:var(--surface)}
+.btn-ghost:hover{border-color:var(--accent-text)}
+
+/* hero */
+.hero{padding-block:clamp(44px,7vw,88px) 64px; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:48px; align-items:center}
+@media (max-width:960px){.hero{grid-template-columns:1fr}}
+.eyebrow{display:inline-flex; align-items:center; gap:10px; font:500 12.5px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--accent-text); background:var(--chip); padding:9px 14px; border-radius:8px}
+.eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--pass); box-shadow:0 0 0 4px color-mix(in srgb,var(--pass) 22%,transparent)}
+h1{font:800 clamp(38px,5.2vw,64px)/1.03 var(--display); letter-spacing:-.035em; margin:22px 0 20px; text-wrap:balance}
+h1 .hl{font-style:normal; background:linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 92%, transparent 92%); padding-inline:.06em}
+.lead{font-size:clamp(17px,1.6vw,19px); color:var(--muted); max-width:54ch; margin:0 0 30px}
+.cta{display:flex; flex-wrap:wrap; gap:12px}
+.stats{display:grid; grid-template-columns:repeat(3,auto); justify-content:start; gap:12px 36px; margin-top:38px; padding-top:24px; border-top:1px dashed var(--line)}
+.stats b{display:block; font:800 28px/1 var(--display); letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.stats span{font-size:13.5px; color:var(--muted)}
+@media (max-width:480px){.stats{grid-template-columns:1fr 1fr}}
+
+/* terminal */
+.term{background:var(--term-bg); color:var(--term-ink); border-radius:16px; border:1px solid var(--term-line); box-shadow:var(--shadow); overflow:hidden; font:400 12.5px/1.75 var(--mono); min-width:0}
+.term-head{display:flex; align-items:center; gap:7px; padding:12px 16px; border-bottom:1px solid var(--term-line)}
+.term-head i{width:11px; height:11px; border-radius:50%; background:var(--term-line)}
+.term-head i:nth-child(1){background:#f2a516} .term-head i:nth-child(2){background:#7189ff}
+.term-head b{margin-left:auto; font-weight:400; color:var(--term-dim); font-size:12px}
+.term-body{padding:18px 20px 22px; overflow-x:auto; white-space:pre}
+.t-dim{color:var(--term-dim)} .t-key{color:var(--term-key)} .t-str{color:var(--term-str)}
+.t-pass{color:var(--term-pass); font-weight:600} .t-fail{color:var(--term-fail); font-weight:600}
+.line{animation:in .35s both}
+@keyframes in{from{opacity:.2}}
+.cursor{display:inline-block; width:8px; height:15px; background:var(--term-str); vertical-align:-2px; animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* sections */
+section.block{padding-block:clamp(56px,8vw,92px); border-top:1px solid var(--line)}
+.sec-head{display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:12px 32px; margin-bottom:40px}
+.tag{font:500 12.5px/1 var(--mono); color:var(--amber-text); letter-spacing:.06em; text-transform:uppercase}
+.tag::before{content:"// "; opacity:.6}
+h2{font:700 clamp(30px,4vw,44px)/1.08 var(--display); letter-spacing:-.03em; margin:12px 0 0; text-wrap:balance}
+.sec-head p{color:var(--muted); max-width:46ch; margin:0}
+h3{font:700 21px/1.25 var(--display); letter-spacing:-.015em; margin:0; text-wrap:balance}
+
+/* about */
+.about{display:grid; grid-template-columns:1.15fr 1fr; gap:48px}
+@media (max-width:960px){.about{grid-template-columns:1fr}}
+.about p{margin:0 0 16px; max-width:62ch; font-size:17px}
+.values{display:grid; gap:12px; align-content:start}
+.value{display:flex; gap:16px; padding:18px 20px; border-radius:14px; background:var(--surface); border:1px solid var(--line)}
+.value b{font:700 16px/1.3 var(--display); display:block; margin-bottom:3px}
+.value span{color:var(--muted); font-size:14.5px}
+.value .ic{flex:none; width:40px; height:40px; border-radius:10px; display:grid; place-items:center; background:var(--chip); color:var(--accent-text)}
+.value .ic svg{width:20px; height:20px}
+.domains{margin-top:28px}
+.domains .label{font:500 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+/* chips */
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+.chip{display:inline-flex; align-items:center; padding:7px 12px; border-radius:8px; background:var(--chip); font-weight:500; font-size:14px}
+
+/* highlights */
+.cases{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+@media (max-width:960px){.cases{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.cases{grid-template-columns:1fr}}
+.case{padding:24px; border-radius:16px; background:var(--surface); border:1px solid var(--line); display:flex; flex-direction:column; gap:12px; min-width:0}
+.case .metric{font:800 30px/1 var(--display); letter-spacing:-.03em; color:var(--accent-text); font-variant-numeric:tabular-nums}
+.case .metric small{font-size:15px; font-weight:700; color:var(--muted); letter-spacing:0}
+.case h3{font-size:18px}
+.case p{margin:0; color:var(--muted); font-size:14.5px}
+.case .where{margin-top:auto; font:500 12px/1.4 var(--mono); color:var(--muted); padding-top:12px; border-top:1px dashed var(--line)}
+
+/* experience timeline */
+.timeline{display:grid; gap:0; position:relative}
+.job{display:grid; grid-template-columns:190px 1fr; gap:32px; padding-block:28px; border-top:1px solid var(--line)}
+.job:first-child{border-top:0; padding-top:0}
+@media (max-width:760px){.job{grid-template-columns:1fr; gap:10px}}
+.when{font:500 13px/1.5 var(--mono); color:var(--muted); font-variant-numeric:tabular-nums}
+.now{display:inline-block; margin-top:8px; padding:4px 10px; border-radius:6px; background:color-mix(in srgb,var(--pass) 16%,transparent); color:var(--pass); font:600 11px/1.4 var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.co{color:var(--accent-text); font-weight:600; margin:4px 0 14px}
+.job ul{margin:0; padding:0; list-style:none; display:grid; gap:8px; max-width:70ch}
+.job li{position:relative; padding-left:26px; color:var(--muted)}
+.job li::before{content:"✓"; position:absolute; left:0; top:0; color:var(--pass); font-weight:600; font-family:var(--mono)}
+.job li strong{color:var(--ink); font-weight:600}
+
+/* skills */
+.skills{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media (max-width:960px){.skills{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.skills{grid-template-columns:1fr}}
+.sk{padding:22px; border-radius:16px; border:1px solid var(--line); background:var(--surface)}
+.sk-label{font:500 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+/* AI */
+.prompt{display:grid; grid-template-columns:1fr 1.1fr; gap:40px; align-items:start}
+@media (max-width:960px){.prompt{grid-template-columns:1fr}}
+.uses{display:grid; gap:12px; margin:0; padding:0; list-style:none}
+.uses li{padding:18px 20px; border-radius:14px; background:var(--surface); border:1px solid var(--line)}
+.uses b{font:700 16px/1.3 var(--display); display:block; margin-bottom:2px}
+.uses span{color:var(--muted); font-size:14.5px}
+.pcard{border-radius:16px; background:var(--term-bg); color:var(--term-ink); border:1px solid var(--term-line); box-shadow:var(--shadow); overflow:hidden; min-width:0}
+.pcard-head{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid var(--term-line); font:500 12px var(--mono); color:var(--term-dim)}
+.pcard-head .who span{padding:4px 10px; border-radius:6px; background:var(--term-line); color:var(--term-ink)}
+.pcard pre{margin:0; padding:20px; font:400 13px/1.75 var(--mono); white-space:pre-wrap; word-break:break-word}
+.k{color:var(--term-str); font-weight:600}
+
+/* education + certs */
+.edu{display:grid; grid-template-columns:1fr 1fr; gap:40px}
+@media (max-width:860px){.edu{grid-template-columns:1fr}}
+.edu h3{font-size:15px; font-family:var(--mono); font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:12px}
+.list{list-style:none; margin:0; padding:0; display:grid}
+.list li{display:grid; grid-template-columns:96px 1fr; gap:16px; padding-block:14px; border-top:1px solid var(--line)}
+.list li:last-child{border-bottom:1px solid var(--line)}
+.list .yr{font:500 13px/1.6 var(--mono); color:var(--amber-text); font-variant-numeric:tabular-nums}
+.list b{display:block; font-weight:600}
+.list span{color:var(--muted); font-size:14.5px}
+.badge{display:inline-block; margin-right:8px; padding:2px 8px; border-radius:6px; background:var(--chip); color:var(--accent-text); font:600 12px/1.6 var(--mono)}
+
+/* contact */
+.contact{border-radius:24px; padding:clamp(28px,6vw,64px); background:var(--accent); color:var(--on-accent); display:grid; grid-template-columns:1.1fr .9fr; gap:32px; align-items:center}
+@media (max-width:960px){.contact{grid-template-columns:1fr}}
+.contact h2{font-size:clamp(32px,5vw,52px)}
+.contact h2 .hl{background:linear-gradient(transparent 60%, color-mix(in srgb,var(--amber) 70%,transparent) 60%, color-mix(in srgb,var(--amber) 70%,transparent) 92%, transparent 92%)}
+.contact p{opacity:.85; max-width:44ch}
+.contact .tag{color:inherit; opacity:.8}
+.clist{display:grid; gap:10px}
+.crow{display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:12px; background:color-mix(in srgb,var(--on-accent) 10%,transparent); border:1px solid color-mix(in srgb,var(--on-accent) 22%,transparent); color:inherit; text-decoration:none; transition:background .2s; min-width:0}
+a.crow:hover{background:color-mix(in srgb,var(--on-accent) 18%,transparent)}
+.crow .ic{flex:none; width:38px; height:38px; border-radius:10px; background:var(--on-accent); color:var(--accent); display:grid; place-items:center}
+.crow .ic svg{width:18px; height:18px}
+.crow .txt{min-width:0; flex:1}
+.crow small{display:block; font:500 11px/1.2 var(--mono); letter-spacing:.06em; text-transform:uppercase; opacity:.75}
+.crow b{display:block; font-weight:600; overflow-wrap:anywhere; user-select:all}
+.copy{flex:none; border:0; border-radius:8px; padding:9px 14px; background:var(--on-accent); color:var(--accent); font:600 13px var(--body); cursor:pointer}
+footer{padding-block:36px 48px; color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px}
+footer code{font-family:var(--mono); font-size:12.5px}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.line{animation:none}.cursor{animation:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="logo" href="#inicio" aria-label="Início"><i>✓</i>marina<span>.qa</span></a>
+    <nav class="links" id="nav" aria-label="Seções">
+      <a href="#sobre" data-i18n="nav.about">Sobre</a>
+      <a href="#destaques" data-i18n="nav.cases">Destaques</a>
+      <a href="#experiencia" data-i18n="nav.xp">Experiência</a>
+      <a href="#skills" data-i18n="nav.skills">Skills</a>
+      <a href="#ia" data-i18n="nav.ai">IA</a>
+      <a href="#formacao" data-i18n="nav.edu">Formação</a>
+      <a href="#contato" data-i18n="nav.contact">Contato</a>
+    </nav>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-pt" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Alternar tema claro/escuro">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button type="button" class="icon-btn" id="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="inicio">
+  <section class="hero">
+    <div>
+      <span class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">Engenheira de QA Sênior</span></span>
+      <h1><span data-i18n="hero.h1a">Oi, eu sou a Marina.</span><br><span data-i18n="hero.h1b">Qualidade começa</span> <em class="hl" data-i18n="hero.h1c">na história de usuário.</em></h1>
+      <p class="lead" data-i18n="hero.lead">Mais de 11 anos testando software: testes funcionais e exploratórios, automação com Cypress, Playwright e Robot Framework, APIs e bancos de dados. Gosto de entrar cedo no projeto, com Shift-left e BDD, para que o defeito nem chegue a virar código.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#experiencia"><span data-i18n="hero.cta1">Ver experiência</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="#contato" data-i18n="hero.cta2">Fale comigo</a>
+      </div>
+      <div class="stats">
+        <div><b>11+</b><span data-i18n="hero.s1">anos em QA</span></div>
+        <div><b>4</b><span data-i18n="hero.s2">certificações, incl. ISTQB</span></div>
+        <div><b>2</b><span data-i18n="hero.s3">pós-graduações</span></div>
+      </div>
+    </div>
+
+    <div class="term" role="img" aria-label="Apresentação em forma de teste Robot Framework">
+      <div class="term-head"><i></i><i></i><i></i><b>~/marina/portfolio.robot</b></div>
+      <div class="term-body" id="term-body"></div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="block" id="sobre">
+    <div class="sec-head"><div><span class="tag" data-i18n="about.tag">Sobre mim</span><h2 data-i18n="about.h2">Teste bom começa antes da primeira linha de código.</h2></div></div>
+    <div class="about">
+      <div>
+        <p data-i18n="about.p1">Sou Engenheira de QA e trabalho com testes de software desde 2014. Comecei validando sistemas de gestão e documentos fiscais, passei por fintech e conta digital, e hoje atuo em projetos de órgãos públicos, incluindo o novo sistema do Programa Mais Médicos para o Brasil.</p>
+        <p data-i18n="about.p2">Meu foco é antecipar problemas: participo da escrita das histórias de usuário e da prototipação, defino padrões de teste e de critérios de aceite, e depois sustento isso com automação, testes de API e investigação de falhas em produção. Também faço parte de um Centro de Excelência de QA, onde dou cursos e palestras para outros profissionais.</p>
+        <div class="domains">
+          <span class="label" data-i18n="about.dom">Domínios de negócio</span>
+          <div class="chips">
+            <span class="chip" data-i18n="dom.1">Financeiro e fintech</span>
+            <span class="chip" data-i18n="dom.2">Meios de pagamento</span>
+            <span class="chip" data-i18n="dom.3">Governo federal, estadual e municipal</span>
+            <span class="chip" data-i18n="dom.4">Documentos fiscais (NF-e, CT-e, MDF-e)</span>
+            <span class="chip">ERP e SAP</span>
+            <span class="chip" data-i18n="dom.5">Consultoria</span>
+          </div>
+        </div>
+      </div>
+      <div class="values">
+        <div class="value"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span><div><b data-i18n="about.v1t">Shift-left e BDD</b><span data-i18n="about.v1d">Testo requisitos, protótipos e histórias de usuário antes do desenvolvimento.</span></div></div>
+        <div class="value"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z"/></svg></span><div><b data-i18n="about.v2t">Automação e API</b><span data-i18n="about.v2d">Cypress, Playwright e Robot Framework na interface; Postman e Newman nas APIs REST.</span></div></div>
+        <div class="value"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3.2 3.2 0 0 1 0 6.3M18 14.3c1.9.8 3 2.8 3 5.7"/></svg></span><div><b data-i18n="about.v3t">Estratégia e pessoas</b><span data-i18n="about.v3d">Padrões de qualidade, liderança de squad e ensino de QA dentro de um CoE.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTAQUES -->
+  <section class="block" id="destaques">
+    <div class="sec-head"><div><span class="tag" data-i18n="cs.tag">Destaques</span><h2 data-i18n="cs.h2">Resultados que eu levo comigo</h2></div><p data-i18n="cs.p">Alguns momentos da carreira que mostram como eu trabalho.</p></div>
+    <div class="cases">
+      <article class="case">
+        <div class="metric">5 → 2 <small data-i18n="cs.days">dias</small></div>
+        <h3 data-i18n="cs.1t">Homologação PAF-ECF mais rápida</h3>
+        <p data-i18n="cs.1d">Planejei e executei os testes funcionais para a homologação na Secretaria da Fazenda e reduzi o tempo de validação de 5 para 2 dias.</p>
+        <span class="where">ADM Sistemas</span>
+      </article>
+      <article class="case">
+        <div class="metric" data-i18n="cs.2m">Dia 1</div>
+        <h3 data-i18n="cs.2t">Shift-left num projeto novo</h3>
+        <p data-i18n="cs.2d">No sistema PGP do Programa Mais Médicos, testo desde a escrita das histórias de usuário e da prototipação, e ajudo a definir os padrões de HU e de testes.</p>
+        <span class="where">AgSUS</span>
+      </article>
+      <article class="case">
+        <div class="metric">CoE</div>
+        <h3 data-i18n="cs.3t">Ensino e padrões de QA</h3>
+        <p data-i18n="cs.3d">No Centro de Excelência de QA, apoio práticas e ferramentas da empresa e ministro cursos e palestras para outros profissionais.</p>
+        <span class="where">CAST Group</span>
+      </article>
+      <article class="case">
+        <div class="metric">OKR</div>
+        <h3 data-i18n="cs.4t">Liderança de squad</h3>
+        <p data-i18n="cs.4d">Liderei a squad de melhoria de um ERP para micro e pequenas empresas, com metas e indicadores OKR, Scrum e Kanban.</p>
+        <span class="where">ADM Sistemas</span>
+      </article>
+    </div>
+  </section>
+
+  <!-- EXPERIENCIA -->
+  <section class="block" id="experiencia">
+    <div class="sec-head"><div><span class="tag" data-i18n="xp.tag">Experiência</span><h2 data-i18n="xp.h2">Por onde eu passei</h2></div></div>
+    <div class="timeline">
+      <article class="job">
+        <div class="when">06/2025 – <span data-i18n="xp.cur">atual</span><br><span class="now" data-i18n="xp.now">Em andamento</span></div>
+        <div>
+          <h3 data-i18n="xp.1r">Analista de Qualidade de Software</h3>
+          <div class="co" data-i18n="xp.1c">AgSUS · Agência Brasileira de Apoio à Gestão do SUS</div>
+          <ul>
+            <li data-i18n="xp.1a">Testes <strong>Shift-left</strong> na escrita de histórias de usuário e na prototipação do novo sistema PGP (Programa Mais Médicos para o Brasil).</li>
+            <li data-i18n="xp.1b">Definição de diretrizes e padrões para histórias de usuário, processos de teste e desenvolvimento.</li>
+            <li data-i18n="xp.1c2">Planejamento e execução de testes funcionais, com cenários e relatórios no Jira e no Confluence.</li>
+            <li data-i18n="xp.1d">Testes de <strong>performance e de API</strong>, gestão de falhas e apoio à investigação de erros em produção.</li>
+            <li data-i18n="xp.1e">Uso de IA (<strong>Claude e Claude Code</strong>) para criar massas de dados e cenários e agilizar a execução de testes.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">06/2023 – <span data-i18n="xp.cur">atual</span><br><span class="now" data-i18n="xp.now">Em andamento</span></div>
+        <div>
+          <h3 data-i18n="xp.2r">Software Quality Assurance Engineer Pleno</h3>
+          <div class="co">CAST Group</div>
+          <ul>
+            <li data-i18n="xp.2a">Integrante do <strong>Centro de Excelência (CoE) de QA</strong>, com cursos e palestras em eventos internos.</li>
+            <li data-i18n="xp.2b">Automação com <strong>Robot Framework e Cypress</strong>; testes de APIs REST com Postman e relatórios com Newman.</li>
+            <li data-i18n="xp.2c">Shift-left, BDD e testes exploratórios nos projetos da SEDF e da SECONT.</li>
+            <li data-i18n="xp.2d">Casos e cenários no Jira com Zephyr Scale, ciclo de vida no Azure DevOps e MySQL para testes de integração.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">09/2022 – 05/2023</div>
+        <div>
+          <h3>Quality Assurance · Front-end React Native</h3>
+          <div class="co">Contaí Digital</div>
+          <ul>
+            <li data-i18n="xp.3a">Manutenção e testes da conta digital Contaí, com foco na segurança do app Android.</li>
+            <li data-i18n="xp.3b">Novas validações de <strong>reconhecimento facial</strong> com a API Unico.</li>
+            <li data-i18n="xp.3c">Testes de API com Postman e testes exploratórios.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">04/2020 – 08/2022</div>
+        <div>
+          <h3 data-i18n="xp.4r">Quality Assurance Pleno</h3>
+          <div class="co">ADM Sistemas</div>
+          <ul>
+            <li data-i18n="xp.4a"><strong>Liderança de squad</strong> focada em melhorar sistemas de gestão para micro e pequenas empresas.</li>
+            <li data-i18n="xp.4b">Metas e indicadores OKR, com Scrum e Kanban.</li>
+            <li data-i18n="xp.4c">Correções de usabilidade em Delphi, testes com JUnit, banco Firebird e gestão de defeitos no Redmine.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when">01/2014 – 04/2020</div>
+        <div>
+          <h3 data-i18n="xp.5r">Analista de Teste de Software</h3>
+          <div class="co">ADM Sistemas</div>
+          <ul>
+            <li data-i18n="xp.5a">Testes funcionais para homologação de <strong>PAF-ECF</strong> na SEF, reduzindo a validação de 5 para 2 dias.</li>
+            <li data-i18n="xp.5b">Validação e documentação de requisitos; testes funcionais, de usabilidade, alfa e beta.</li>
+            <li data-i18n="xp.5c">Testes unitários com JUnit e automação com Cucumber.</li>
+            <li data-i18n="xp.5d">Definição de padrões de QA, implantação do Redmine e condução de workshops internos.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="block" id="skills">
+    <div class="sec-head"><div><span class="tag" data-i18n="sk.tag">Skills e ferramentas</span><h2 data-i18n="sk.h2">Minha caixa de ferramentas</h2></div><p data-i18n="sk.p">O que eu uso para planejar, executar, automatizar e reportar testes.</p></div>
+    <div class="skills">
+      <div class="sk"><span class="sk-label" data-i18n="sk.c1">Tipos de teste</span><div class="chips"><span class="chip" data-i18n="sk.t1">Funcionais</span><span class="chip" data-i18n="sk.t2">Exploratórios</span><span class="chip" data-i18n="sk.t3">Regressão</span><span class="chip" data-i18n="sk.t4">Integração</span><span class="chip" data-i18n="sk.t5">Usabilidade</span><span class="chip" data-i18n="sk.t6">Performance</span></div></div>
+      <div class="sk"><span class="sk-label" data-i18n="sk.c2">Automação</span><div class="chips"><span class="chip">Cypress</span><span class="chip">Playwright</span><span class="chip">Robot Framework</span><span class="chip">Cucumber</span><span class="chip">JUnit</span><span class="chip">JavaScript</span></div></div>
+      <div class="sk"><span class="sk-label" data-i18n="sk.c3">APIs</span><div class="chips"><span class="chip">REST</span><span class="chip">Postman</span><span class="chip">Newman</span><span class="chip">Swagger</span></div></div>
+      <div class="sk"><span class="sk-label" data-i18n="sk.c4">Banco de dados</span><div class="chips"><span class="chip">SQL</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Firebird</span></div></div>
+      <div class="sk"><span class="sk-label" data-i18n="sk.c5">Práticas</span><div class="chips"><span class="chip">Shift-left</span><span class="chip">BDD</span><span class="chip">Scrum</span><span class="chip">Kanban</span><span class="chip" data-i18n="sk.p1">Estratégia de testes</span></div></div>
+      <div class="sk"><span class="sk-label" data-i18n="sk.c6">Gestão e versionamento</span><div class="chips"><span class="chip">Jira</span><span class="chip">Zephyr Scale</span><span class="chip">Confluence</span><span class="chip">Azure DevOps</span><span class="chip">Git</span><span class="chip">Redmine</span><span class="chip">Mantis</span></div></div>
+    </div>
+  </section>
+
+  <!-- IA -->
+  <section class="block" id="ia">
+    <div class="sec-head"><div><span class="tag" data-i18n="ai.tag">IA no fluxo de QA</span><h2 data-i18n="ai.h2">IA como parceira, com critério de QA</h2></div><p data-i18n="ai.p">Uso Claude e Claude Code no dia a dia, sempre com contexto, formato e restrições claros, e revisando o que sai.</p></div>
+    <div class="prompt">
+      <ul class="uses">
+        <li><b data-i18n="ai.u1">Massas de dados</b><span data-i18n="ai.u1d">Scripts SQL e arquivos de dados fictícios que cobrem casos válidos, inválidos e de limite.</span></li>
+        <li><b data-i18n="ai.u2">Cenários a partir de histórias</b><span data-i18n="ai.u2d">Transformo critérios de aceite em cenários BDD positivos, negativos e de borda.</span></li>
+        <li><b data-i18n="ai.u3">Roteiros e automação</b><span data-i18n="ai.u3d">Rascunho e revisão de scripts Cypress, Playwright e Robot Framework.</span></li>
+        <li><b data-i18n="ai.u4">Relatos de defeito</b><span data-i18n="ai.u4d">Passos para reproduzir, evidências e impacto escritos de forma objetiva.</span></li>
+      </ul>
+      <div class="pcard">
+        <div class="pcard-head"><span data-i18n="ai.card">exemplo de prompt</span><span class="who"><span>Claude Code</span></span></div>
+        <pre id="prompt-text"></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMACAO -->
+  <section class="block" id="formacao">
+    <div class="sec-head"><div><span class="tag" data-i18n="ed.tag">Formação</span><h2 data-i18n="ed.h2">Estudo contínuo</h2></div></div>
+    <div class="edu">
+      <div>
+        <h3 data-i18n="ed.acad">Acadêmica</h3>
+        <ul class="list">
+          <li><span class="yr">2024 – 2025</span><div><b data-i18n="ed.1">Pós-graduação em Engenharia de Software, ênfase em Qualidade de Software</b><span>Faculdade VINCIT</span></div></li>
+          <li><span class="yr">2021 – 2022</span><div><b data-i18n="ed.2">Pós-graduação em Desenvolvimento de Aplicações Mobile</b><span>Faculdade Descomplica</span></div></li>
+          <li><span class="yr">2011 – 2014</span><div><b data-i18n="ed.3">Tecnologia em Análise e Desenvolvimento de Sistemas</b><span data-i18n="ed.3s">UNOESC · Universidade do Oeste de Santa Catarina</span></div></li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="ed.cert">Certificações</h3>
+        <ul class="list">
+          <li><span class="yr">2024</span><div><b><span class="badge">CTFL</span>Certified Tester Foundation Level</b><span>ISTQB</span></div></li>
+          <li><span class="yr">2024</span><div><b><span class="badge">SFPC</span>Scrum Foundation</b><span>CertiProf</span></div></li>
+          <li><span class="yr">2024</span><div><b><span class="badge">ASTFC</span>Accredited Software Testing Fundamentals</b><span>AICS</span></div></li>
+          <li><span class="yr">2015</span><div><b><span class="badge">ATC-NF</span><span data-i18n="ed.c4">Analista de Testes NF</span></b><span>IBQTS</span></div></li>
+        </ul>
+        <p style="margin:18px 0 0; color:var(--muted); font-size:14.5px" data-i18n="ed.lang">Inglês B1+, com estudo contínuo e prática de conversação.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="block" id="contato" style="border-top:0">
+    <div class="contact">
+      <div>
+        <span class="tag" data-i18n="co.tag">Contato</span>
+        <h2><span data-i18n="co.h2a">Vamos achar o bug</span> <span class="hl" data-i18n="co.h2b">antes do cliente?</span></h2>
+        <p data-i18n="co.p">Aberta a novas oportunidades, consultorias e conversas sobre qualidade de software.</p>
+      </div>
+      <div class="clist">
+        <div class="crow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 7 9 6 9-6"/></svg></span><span class="txt"><small>E-mail</small><b id="email">marina.bendetti@gmail.com</b></span><button type="button" class="copy" id="copy-email" data-i18n="co.copy">Copiar</button></div>
+        <a class="crow" href="https://www.linkedin.com/in/marinabenedetti/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg></span><span class="txt"><small>LinkedIn</small><b>in/marinabenedetti</b></span></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Marina Benedetti Preto</span>
+    <code data-i18n="ft">4 tests, 4 passed · feito com cuidado</code>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const EN = {
+    "nav.about":"About","nav.cases":"Highlights","nav.xp":"Experience","nav.skills":"Skills","nav.ai":"AI","nav.edu":"Education","nav.contact":"Contact",
+    "hero.eyebrow":"Senior QA Engineer","hero.h1a":"Hi, I'm Marina.","hero.h1b":"Quality starts","hero.h1c":"in the user story.",
+    "hero.lead":"Over 11 years testing software: functional and exploratory testing, automation with Cypress, Playwright and Robot Framework, APIs and databases. I like to join projects early, with Shift-left and BDD, so defects never make it into the code.",
+    "hero.cta1":"See experience","hero.cta2":"Get in touch","hero.s1":"years in QA","hero.s2":"certifications, incl. ISTQB","hero.s3":"postgraduate degrees",
+    "about.tag":"About me","about.h2":"Good testing starts before the first line of code.",
+    "about.p1":"I'm a QA Engineer and I've worked in software testing since 2014. I started out validating management systems and tax documents, moved through fintech and digital banking, and today I work on public sector projects, including the new system for Brazil's Mais Médicos program.",
+    "about.p2":"My focus is catching problems early: I take part in writing user stories and prototyping, define testing and acceptance criteria standards, and back that up with automation, API testing and investigating production failures. I'm also part of a QA Center of Excellence, where I teach courses and give talks to other professionals.",
+    "about.dom":"Business domains","dom.1":"Finance and fintech","dom.2":"Payments","dom.3":"Federal, state and municipal government","dom.4":"Brazilian tax documents (NF-e, CT-e, MDF-e)","dom.5":"Consulting",
+    "about.v1t":"Shift-left and BDD","about.v1d":"I test requirements, prototypes and user stories before development starts.",
+    "about.v2t":"Automation and APIs","about.v2d":"Cypress, Playwright and Robot Framework for the UI; Postman and Newman for REST APIs.",
+    "about.v3t":"Strategy and people","about.v3d":"Quality standards, squad leadership and teaching QA inside a CoE.",
+    "cs.tag":"Highlights","cs.h2":"Results I bring with me","cs.p":"A few moments from my career that show how I work.","cs.days":"days",
+    "cs.1t":"Faster PAF-ECF certification","cs.1d":"I planned and ran the functional tests for certification with the state Treasury and cut validation time from 5 to 2 days.",
+    "cs.2m":"Day 1","cs.2t":"Shift-left on a new project","cs.2d":"On the PGP system for the Mais Médicos program, I test from the moment user stories and prototypes are written, and help define the story and testing standards.",
+    "cs.3t":"Teaching and QA standards","cs.3d":"In the QA Center of Excellence, I support company-wide practices and tools and teach courses and talks for other professionals.",
+    "cs.4t":"Squad leadership","cs.4d":"I led the squad improving an ERP for micro and small businesses, using OKR goals and metrics, Scrum and Kanban.",
+    "xp.tag":"Experience","xp.h2":"Where I've worked","xp.cur":"present","xp.now":"Current",
+    "xp.1r":"Software Quality Analyst","xp.1c":"AgSUS · Brazilian Agency for SUS Management Support",
+    "xp.1a":"<strong>Shift-left</strong> testing while user stories and prototypes are written for the new PGP system (Mais Médicos para o Brasil program).",
+    "xp.1b":"Defining guidelines and standards for user stories, testing and development processes.",
+    "xp.1c2":"Planning and running functional tests, with scenarios and reports in Jira and Confluence.",
+    "xp.1d":"<strong>Performance and API</strong> testing, failure management and support investigating production errors.",
+    "xp.1e":"Using AI (<strong>Claude and Claude Code</strong>) to create test data and scenarios and speed up test execution.",
+    "xp.2r":"Software Quality Assurance Engineer (mid-level)",
+    "xp.2a":"Member of the <strong>QA Center of Excellence (CoE)</strong>, teaching courses and giving talks at internal events.",
+    "xp.2b":"Automation with <strong>Robot Framework and Cypress</strong>; REST API testing with Postman and reports with Newman.",
+    "xp.2c":"Shift-left, BDD and exploratory testing on projects for SEDF and SECONT.",
+    "xp.2d":"Test cases in Jira with Zephyr Scale, lifecycle in Azure DevOps and MySQL for integration testing.",
+    "xp.3a":"Maintenance and testing of the Contaí digital account, focused on Android app security.",
+    "xp.3b":"New <strong>facial recognition</strong> validations with the Unico API.",
+    "xp.3c":"API testing with Postman and exploratory testing.",
+    "xp.4r":"Quality Assurance (mid-level)",
+    "xp.4a":"<strong>Squad leadership</strong> focused on improving management systems for micro and small businesses.",
+    "xp.4b":"OKR goals and metrics, with Scrum and Kanban.",
+    "xp.4c":"Usability fixes in Delphi, JUnit tests, Firebird database and defect tracking in Redmine.",
+    "xp.5r":"Software Test Analyst",
+    "xp.5a":"Functional tests for <strong>PAF-ECF</strong> certification with the state Treasury, cutting validation from 5 to 2 days.",
+    "xp.5b":"Requirements validation and documentation; functional, usability, alpha and beta testing.",
+    "xp.5c":"Unit tests with JUnit and automation with Cucumber.",
+    "xp.5d":"Defining QA standards, rolling out Redmine and running internal workshops.",
+    "sk.tag":"Skills and tools","sk.h2":"My toolbox","sk.p":"What I use to plan, run, automate and report tests.",
+    "sk.c1":"Test types","sk.c2":"Automation","sk.c3":"APIs","sk.c4":"Databases","sk.c5":"Practices","sk.c6":"Management and versioning",
+    "sk.t1":"Functional","sk.t2":"Exploratory","sk.t3":"Regression","sk.t4":"Integration","sk.t5":"Usability","sk.t6":"Performance","sk.p1":"Test strategy",
+    "ai.tag":"AI in the QA workflow","ai.h2":"AI as a partner, with a QA mindset","ai.p":"I use Claude and Claude Code every day, always with clear context, format and constraints, and I review what comes out.",
+    "ai.u1":"Test data","ai.u1d":"SQL scripts and fictional data files covering valid, invalid and boundary cases.",
+    "ai.u2":"Scenarios from user stories","ai.u2d":"I turn acceptance criteria into positive, negative and edge BDD scenarios.",
+    "ai.u3":"Scripts and automation","ai.u3d":"Drafting and reviewing Cypress, Playwright and Robot Framework scripts.",
+    "ai.u4":"Bug reports","ai.u4d":"Steps to reproduce, evidence and impact written objectively.","ai.card":"prompt example",
+    "ed.tag":"Education","ed.h2":"Always learning","ed.acad":"Academic","ed.cert":"Certifications",
+    "ed.1":"Postgraduate degree in Software Engineering, focus on Software Quality","ed.2":"Postgraduate degree in Mobile Application Development",
+    "ed.3":"Associate degree in Systems Analysis and Development","ed.3s":"UNOESC · University of Western Santa Catarina",
+    "ed.c4":"Test Analyst NF","ed.lang":"English B1+, with ongoing study and conversation practice.",
+    "co.tag":"Contact","co.h2a":"Shall we find the bug","co.h2b":"before your customer does?","co.p":"Open to new opportunities, consulting and conversations about software quality.","co.copy":"Copy",
+    "ft":"4 tests, 4 passed · built with care"
+  };
+
+  const TERM = {
+    pt: [
+      ['<span class="t-key">*** Test Cases ***</span>'],
+      ['Validar Perfil Da Marina'],
+      ['    Deve Ter Experiência    <span class="t-str">anos=11</span>'],
+      ['    Deve Aplicar    <span class="t-str">Shift-left</span>    <span class="t-str">BDD</span>'],
+      ['    Deve Automatizar    <span class="t-str">Cypress</span>    <span class="t-str">Playwright</span>'],
+      [''],
+      ['<span class="t-dim">$</span> robot marina.robot'],
+      ['<span class="t-dim">==============================================</span>'],
+      ['Encontra o defeito na história      | <span class="t-pass">PASS</span> |'],
+      ['Automatiza a regressão              | <span class="t-pass">PASS</span> |'],
+      ['Escreve critério de aceite junto    | <span class="t-pass">PASS</span> |'],
+      ['Aceita "na minha máquina funciona"  | <span class="t-fail">FAIL</span> |'],
+      ['<span class="t-dim">  esperado: aceite · recebido: pedido de evidência</span>'],
+      ['<span class="t-dim">----------------------------------------------</span>'],
+      ['4 tests, <span class="t-pass">3 passed</span>, <span class="t-fail">1 failed</span> <span class="t-dim">(de propósito)</span> <span class="cursor"></span>']
+    ],
+    en: [
+      ['<span class="t-key">*** Test Cases ***</span>'],
+      ['Validate Marina Profile'],
+      ['    Should Have Experience    <span class="t-str">years=11</span>'],
+      ['    Should Apply    <span class="t-str">Shift-left</span>    <span class="t-str">BDD</span>'],
+      ['    Should Automate    <span class="t-str">Cypress</span>    <span class="t-str">Playwright</span>'],
+      [''],
+      ['<span class="t-dim">$</span> robot marina.robot'],
+      ['<span class="t-dim">==============================================</span>'],
+      ['Finds the defect in the story       | <span class="t-pass">PASS</span> |'],
+      ['Automates the regression            | <span class="t-pass">PASS</span> |'],
+      ['Writes acceptance criteria early    | <span class="t-pass">PASS</span> |'],
+      ['Accepts "works on my machine"       | <span class="t-fail">FAIL</span> |'],
+      ['<span class="t-dim">  expected: accept · received: evidence request</span>'],
+      ['<span class="t-dim">----------------------------------------------</span>'],
+      ['4 tests, <span class="t-pass">3 passed</span>, <span class="t-fail">1 failed</span> <span class="t-dim">(on purpose)</span> <span class="cursor"></span>']
+    ]
+  };
+  const PROMPT = {
+    pt: '<span class="k">Contexto:</span> Sou QA no cadastro de profissionais de saúde de um sistema público. Banco PostgreSQL.\n<span class="k">Tarefa:</span> Gere um script SQL com massa de dados para testar esse cadastro.\n<span class="k">Formato:</span> INSERTs agrupados por cenário, cada grupo com um comentário explicando o que testa.\n<span class="k">Restrições:</span> 20 registros válidos e 10 inválidos; CPFs fictícios com dígito verificador correto; cubra limites de tamanho dos campos; nenhum dado real.\n\n<span class="k">Tabela:</span>\n- profissional(nome, cpf, crm, uf, data_nascimento)',
+    en: '<span class="k">Context:</span> I\'m a QA on the health professional registration of a public system. PostgreSQL database.\n<span class="k">Task:</span> Generate a SQL script with test data for this registration.\n<span class="k">Format:</span> INSERTs grouped by scenario, each group with a comment explaining what it tests.\n<span class="k">Constraints:</span> 20 valid and 10 invalid records; fictional CPFs with a correct check digit; cover field length limits; no real data.\n\n<span class="k">Table:</span>\n- professional(name, cpf, crm, state, birth_date)'
+  };
+
+  const root = document.documentElement;
+  const nodes = document.querySelectorAll("[data-i18n]");
+  const PT = {}; nodes.forEach(n => PT[n.dataset.i18n] = n.innerHTML);
+  const termEl = document.getElementById("term-body");
+  const promptEl = document.getElementById("prompt-text");
+  const store = { get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} } };
+
+  function renderTerm(l){
+    termEl.innerHTML = TERM[l].map((row, i) => row[0] === "" ? "" : '<span class="line" style="animation-delay:' + (i*0.12).toFixed(2) + 's">' + row[0] + '</span>').join("\n");
+  }
+  function setLang(l){
+    const dict = l === "en" ? EN : PT;
+    nodes.forEach(n => { const v = dict[n.dataset.i18n]; if (v != null) n.innerHTML = v; });
+    renderTerm(l);
+    promptEl.innerHTML = PROMPT[l];
+    root.lang = l === "en" ? "en" : "pt-BR";
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+    store.set("marina-lang", l);
+  }
+  document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+  function currentTheme(){
+    const t = root.getAttribute("data-theme");
+    if (t) return t;
+    return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next); store.set("marina-theme", next);
+  });
+  const savedTheme = store.get("marina-theme"); if (savedTheme) root.setAttribute("data-theme", savedTheme);
+  setLang(store.get("marina-lang") === "en" ? "en" : "pt");
+
+  const nav = document.getElementById("nav"), menuBtn = document.getElementById("menu-btn");
+  menuBtn.addEventListener("click", () => { const o = nav.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", String(o)); });
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => { nav.classList.remove("open"); menuBtn.setAttribute("aria-expanded","false"); }));
+
+  const copyBtn = document.getElementById("copy-email");
+  copyBtn.addEventListener("click", () => {
+    const email = document.getElementById("email").textContent;
+    const en = root.lang === "en";
+    const done = () => { copyBtn.textContent = en ? "Copied!" : "Copiado!"; setTimeout(() => copyBtn.textContent = en ? "Copy" : "Copiar", 1600); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(email).then(done, fallback); } catch(e){ fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
